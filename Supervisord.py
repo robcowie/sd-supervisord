@@ -73,6 +73,10 @@ class Supervisord(object):
         except (xmlrpclib.Fault, httplib.HTTPException), exc:
             stats = {}
             self.checks_logger.debug(str(exc))
+        except Exception as e:
+            template = "An exception of type {0} occured. Arguments:\n{1!r}"
+            message = template.format(type(e).__name__, e.args)
+            self.checks_logger.error(message)
         return stats
     
     def get_process_counts(self, server_info):
